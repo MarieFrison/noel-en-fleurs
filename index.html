@@ -1,0 +1,817 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="author" content="Marie Frison">
+<style>body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Missions Arrosoir & Compagnie</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Atkinson+Hyperlegible:wght@400;700&display=swap">
+<style>
+/* Layout: a shop-counter header band, three service tabs, each tab a stack of mission panels marked HTML. */
+:root{
+  --bg:#f3f6f3; --surface:#ffffff; --ink:#18261f; --muted:#56655c; --line:#d5ddd6;
+  --fir:#1f5a3d; --fir-soft:#e1ede5; --berry:#b3283b; --berry-soft:#f7e3e5; --gold:#b98a1e; --gold-soft:#f5ecd4;
+  --ok:#1d7a46; --ok-soft:#dff2e6; --warn:#a4570f; --warn-soft:#fbead6; --bad:#b3283b; --bad-soft:#f7e3e5;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f1713; --surface:#16211b; --ink:#e7efe9; --muted:#9fb0a5; --line:#2a3a31;
+  --fir:#6cc292; --fir-soft:#1c3328; --berry:#ef7b8a; --berry-soft:#3a1c22; --gold:#e3b955; --gold-soft:#3a3018;
+  --ok:#6fd39a; --ok-soft:#173726; --warn:#f0a65c; --warn-soft:#3b2a15; --bad:#ef7b8a; --bad-soft:#3a1c22; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f1713; --surface:#16211b; --ink:#e7efe9; --muted:#9fb0a5; --line:#2a3a31;
+  --fir:#6cc292; --fir-soft:#1c3328; --berry:#ef7b8a; --berry-soft:#3a1c22; --gold:#e3b955; --gold-soft:#3a3018;
+  --ok:#6fd39a; --ok-soft:#173726; --warn:#f0a65c; --warn-soft:#3b2a15; --bad:#ef7b8a; --bad-soft:#3a1c22; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55}
+*{box-sizing:border-box}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.band{background:var(--fir);color:#fff}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) header.band{background:#13281d}}
+:root[data-theme="dark"] header.band{background:#13281d}
+header .wrap{padding-block:28px 22px;display:flex;flex-wrap:wrap;gap:16px 32px;align-items:flex-end;justify-content:space-between}
+.eyebrow{font-size:13px;letter-spacing:.12em;text-transform:uppercase;opacity:.85;margin:0 0 6px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,42px);line-height:1.05;margin:0;text-wrap:balance}
+.op{font-family:var(--display);font-weight:500;font-size:16px;margin:8px 0 0;opacity:.95}
+.shopcard{font-size:14px;line-height:1.4;border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:10px 14px}
+.shopcard b{font-family:var(--display);font-size:16px}
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--surface);border-bottom:1px solid var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--fir)}
+nav .wrap{display:flex;gap:6px;overflow-x:auto;padding-block:8px}
+nav a{font-family:var(--display);font-weight:700;font-size:16px;text-decoration:none;color:var(--muted);padding:10px 16px;border-radius:999px;white-space:nowrap}
+nav a[aria-current="page"]{background:var(--fir-soft);color:var(--fir)}
+nav a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+main .wrap{padding-block:24px 64px;display:grid;gap:24px}
+.intro{display:grid;gap:4px}
+.intro h2{font-family:var(--display);font-size:28px;margin:0}
+.intro p{margin:0;color:var(--muted);max-width:65ch}
+.mission{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px;display:grid;gap:16px;min-width:0}
+.mhead{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:baseline}
+.mnum{font-family:var(--display);font-weight:800;font-size:14px;color:var(--berry);letter-spacing:.06em;text-transform:uppercase}
+.mission h3{font-family:var(--display);font-size:22px;margin:0;flex-basis:100%;text-wrap:balance}
+.tag{font-size:12px;font-weight:700;letter-spacing:.08em;padding:2px 8px;border-radius:6px;background:var(--fir-soft);color:var(--fir)}
+.tag.paper{background:var(--gold-soft);color:var(--gold)}
+.consigne{margin:0;max-width:65ch}
+.comp{margin:0;display:grid;gap:4px;font-size:14px;color:var(--muted);padding:10px 12px;border-radius:8px;background:var(--bg)}
+.comp b{display:inline-block;min-width:118px;color:var(--fir);font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.paperlist{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+.paperlist li{display:flex;gap:10px;align-items:baseline;padding:10px 14px;border:1px dashed var(--line);border-radius:10px}
+/* catalogue */
+.cat{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.prod{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;grid-template-columns:52px 1fr;gap:4px 12px;align-items:start;background:var(--surface)}
+.prod svg{grid-row:span 3;width:52px;height:52px}
+.prod .n{font-weight:700;line-height:1.25}
+.prod .d{font-size:14px;color:var(--muted);line-height:1.35}
+.prod .p{font-family:var(--display);font-weight:800;color:var(--berry);font-variant-numeric:tabular-nums}
+.prod.off{opacity:.38}
+.prod.pick{outline:3px solid var(--fir);outline-offset:-1px}
+.services{font-size:15px;color:var(--muted);margin:0}
+/* quiz */
+.q{display:grid;gap:8px;padding:14px 0;border-top:1px solid var(--line)}
+.q:first-child{border-top:0;padding-top:0}
+.q .qt{font-weight:700}
+.opts{display:grid;gap:6px}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:9px 12px;border:1px solid var(--line);border-radius:10px;cursor:pointer}
+.opt input{margin-top:5px;accent-color:var(--fir)}
+.opt.good{border-color:var(--ok);background:var(--ok-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.explain{font-size:15px;color:var(--muted);margin:0}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:inherit;font-weight:700;border-radius:10px;padding:10px 18px;border:1px solid var(--fir);background:var(--fir);color:var(--surface);cursor:pointer}
+button.ghost{background:transparent;color:var(--fir)}
+.score{font-family:var(--display);font-weight:700}
+/* forms */
+label.f{display:grid;gap:4px;font-weight:700;font-size:15px}
+input[type=text],textarea,select{font:inherit;font-weight:400;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:9px 11px;width:100%}
+textarea{min-height:70px;resize:vertical}
+.hint{font-weight:400;color:var(--muted);font-size:14px}
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.stack{display:grid;gap:12px;min-width:0}
+.checks{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.checks li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+.dot{flex:0 0 22px;height:22px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--bad-soft);color:var(--bad)}
+.checks li.ok .dot{background:var(--ok-soft);color:var(--ok)}
+.meter{font-family:var(--display);font-weight:700}
+/* post preview */
+.post{aspect-ratio:1/1;width:100%;max-width:420px;border-radius:6px;position:relative;overflow:hidden;display:grid;grid-template-rows:auto 1fr auto;padding:7%;gap:4%;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.post .sl{font-family:var(--display);font-weight:800;font-size:clamp(20px,6.4vw,34px);line-height:1.02;text-wrap:balance;margin:0}
+.post .mid{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;min-height:0}
+.post .mid svg{width:100%;height:100%;max-height:150px}
+.post .badge{border-radius:50%;width:clamp(78px,22vw,104px);aspect-ratio:1;display:grid;place-items:center;text-align:center;font-family:var(--display);line-height:1.05;padding:8px}
+.post .badge b{display:block;font-size:clamp(22px,6vw,30px)}
+.post .badge span{font-size:12px}
+.post .foot{display:grid;gap:2px;font-size:clamp(12px,3.4vw,15px)}
+.post .ph{font-weight:700}
+.post .shop{font-family:var(--display);font-weight:700;opacity:.9;font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+/* réclamations */
+.claims{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.claim{border:1px solid var(--line);border-left:5px solid var(--berry);border-radius:10px;padding:14px;display:grid;gap:8px}
+.claim h4{margin:0;font-family:var(--display);font-size:18px}
+.claim blockquote{margin:0;font-style:italic;color:var(--ink);font-size:15px}
+details summary{cursor:pointer;font-weight:700;color:var(--fir)}
+.mailout{white-space:pre-wrap;font-size:15px;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:14px;margin:0;min-height:120px}
+/* sort */
+.sort{display:grid;gap:8px}
+.sitem{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px 12px;align-items:center;padding:10px 12px;border:1px solid var(--line);border-radius:10px}
+@media (max-width:560px){.sitem{grid-template-columns:1fr}}
+.seg{display:flex;flex-wrap:wrap;gap:4px}
+.seg button{padding:6px 10px;font-size:14px;background:transparent;color:var(--muted);border-color:var(--line)}
+.seg button[aria-pressed="true"]{background:var(--fir-soft);color:var(--fir);border-color:var(--fir)}
+.sitem.good{border-color:var(--ok);background:var(--ok-soft)}
+.sitem.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.profiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
+.pf{text-align:left;font-weight:400;background:var(--surface);color:var(--ink);border:1px solid var(--line);padding:12px;display:grid;gap:2px}
+.pf b{font-family:var(--display)}
+.pf[aria-pressed="true"]{border:2px solid var(--fir);background:var(--fir-soft)}
+.feedback{padding:12px 14px;border-radius:10px;font-weight:700;margin:0}
+.feedback.ok{background:var(--ok-soft);color:var(--ok)}
+.feedback.mid{background:var(--warn-soft);color:var(--warn)}
+.feedback.no{background:var(--bad-soft);color:var(--bad)}
+
+/* ---- animations ---- */
+header.band{position:relative;overflow:hidden}
+header.band .wrap{position:relative;z-index:1}
+#snow{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.lights{position:relative;z-index:1;display:flex;justify-content:space-between;padding-inline:max(16px,env(safe-area-inset-left,0px));height:16px;overflow:hidden}
+.lights::before{content:"";position:absolute;left:0;right:0;top:3px;height:2px;background:rgba(255,255,255,.25)}
+.lights i{width:9px;height:12px;border-radius:50% 50% 45% 45%;margin-top:4px;flex:0 0 auto;animation:blink 1.6s infinite}
+.lights i:nth-child(3n){background:#ff5a6e;animation-delay:.2s}.lights i:nth-child(3n+1){background:#ffd166;animation-delay:.7s}.lights i:nth-child(3n+2){background:#7fe0a8;animation-delay:1.2s}
+@keyframes blink{0%,100%{opacity:1;box-shadow:0 0 8px currentColor}50%{opacity:.35;box-shadow:none}}
+[data-view]:not([hidden])>.wrap{animation:enter .4s ease-out}
+@keyframes enter{from{transform:translateY(10px);opacity:.5}to{transform:none;opacity:1}}
+.track{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-top:10px;padding:12px 14px;border-radius:12px;background:var(--surface);border:1px solid var(--line)}
+.gifts{display:flex;gap:8px}
+.gift{width:40px;height:44px;display:grid;place-items:center;position:relative}
+.gift svg{width:40px;height:44px;overflow:visible}
+.gift .lid{transition:transform .5s cubic-bezier(.3,1.6,.5,1);transform-origin:20px 18px}
+.gift .star{transform:scale(0);transform-origin:20px 14px;transition:transform .5s .15s cubic-bezier(.3,1.8,.5,1)}
+.gift.done .lid{transform:translate(6px,-12px) rotate(18deg)}
+.gift.done .star{transform:scale(1)}
+.gift.done{animation:hop .5s}
+.gift span{position:absolute;bottom:-2px;right:-2px;font-size:11px;font-weight:700;background:var(--surface);border:1px solid var(--line);border-radius:999px;width:18px;height:18px;display:grid;place-items:center}
+@keyframes hop{30%{transform:translateY(-8px)}60%{transform:translateY(0)}80%{transform:translateY(-3px)}}
+.tcount{font-family:var(--display);font-weight:700}
+.tdone{flex-basis:100%;margin:0;font-family:var(--display);font-weight:800;color:var(--berry);font-size:20px;animation:pop .5s}
+button.small{padding:6px 12px;font-size:13px;margin-left:auto}
+.mission{position:relative;transition:box-shadow .3s,border-color .3s}
+.mission.won{border-color:var(--ok)}
+.mhead .ribbon{margin-left:auto;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:var(--ok);color:var(--surface);padding:3px 10px;border-radius:999px;animation:pop .45s cubic-bezier(.3,1.8,.5,1)}
+@keyframes pop{0%{transform:scale(.6)}70%{transform:scale(1.08)}100%{transform:scale(1)}}
+@keyframes shake{20%,60%{transform:translateX(-6px)}40%,80%{transform:translateX(6px)}}
+.opt.wrong{animation:shake .4s}
+.opt.good{animation:pop .35s}
+.prod{transition:transform .2s,box-shadow .2s}
+.prod:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(20,40,30,.12)}
+.prod:hover svg{animation:wiggle .6s}
+.prod.pick{animation:pop .35s}
+@keyframes wiggle{25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+.post{transition:background .5s,color .5s}
+.post.bump{animation:bump .3s}
+@keyframes bump{50%{transform:scale(.97)}}
+.likes{margin:0;display:flex;align-items:center;gap:8px;font-weight:700}
+.heart{color:var(--line);font-size:26px;line-height:1;transition:color .3s}
+.likes.on .heart{color:var(--berry);animation:beat 1s 3}
+@keyframes beat{15%{transform:scale(1.35)}30%{transform:scale(1)}45%{transform:scale(1.2)}60%{transform:scale(1)}}
+.sent{display:flex;align-items:center;gap:10px;margin:0;font-weight:700;color:var(--ok)}
+.sent svg{width:40px;height:30px}
+.sent.go svg{animation:fly 1.4s ease-in-out}
+@keyframes fly{0%{transform:none}40%{transform:translate(30px,-14px) rotate(-10deg)}70%{transform:translate(-6px,4px)}100%{transform:none}}
+.client{display:flex;gap:12px;align-items:flex-start}
+.client svg{flex:0 0 46px;width:46px;height:46px}
+.bubble{position:relative;margin:0;background:var(--fir-soft);color:var(--ink);padding:12px 16px;border-radius:14px;min-height:48px;flex:1;min-width:0}
+.bubble::before{content:"";position:absolute;left:-8px;top:16px;border:8px solid transparent;border-right-color:var(--fir-soft);border-left:0}
+.bubble .cur{display:inline-block;width:2px;height:1em;background:var(--fir);vertical-align:-2px;margin-left:2px;animation:blink 1s infinite}
+.score.up{animation:pop .4s}
+#confetti{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:50}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;animation:none!important}}
+.zeoob{display:grid;gap:10px;padding:16px;border-radius:12px;border:2px dashed var(--berry);background:var(--berry-soft)}
+.zeoob h4{margin:0;font-family:var(--display);font-size:18px;color:var(--berry)}
+.zeoob ol{margin:0;padding-left:22px;display:grid;gap:4px}
+.zeoob a{color:var(--berry);font-weight:700}
+.pill{font-family:ui-monospace,Menlo,monospace;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.vit{overflow-x:auto;border-radius:12px;background:var(--fir-soft);padding:12px}
+.vit svg{display:block;width:100%;min-width:480px;height:auto;font-family:var(--body)}
+.vit .tri{stroke-dashoffset:0;animation:dash 2.5s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-56}}
+.vit .star-prod{transform-origin:320px 190px;animation:glow 2.4s ease-in-out infinite}
+@keyframes glow{50%{transform:scale(1.06)}}
+.vit .garland circle{animation:blink 1.6s infinite}
+.vit .garland circle:nth-child(odd){animation-delay:.8s}
+.vrules .dot{background:var(--gold-soft);color:var(--gold)}
+.van{overflow:hidden;border-radius:12px;background:var(--fir-soft)}
+.van svg{display:block;width:100%;height:auto;font-family:var(--body)}
+.van .truck{animation:drive 7s linear infinite}
+.van .road{animation:dash 1s linear infinite}
+@keyframes drive{0%{transform:translateX(-190px)}100%{transform:translateX(660px)}}
+footer{color:var(--muted);font-size:14px;padding-block:0 32px}
+
+</style>
+</head>
+<body>
+
+
+<header class="band">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow">PFMP simulée · 1re année CAP EPC · Scénario de Marie Frison</p>
+      <h1>Arrosoir &amp; Compagnie</h1>
+      <p class="op">Opération « Noël en fleurs » · du 28 novembre au 24 décembre 2026</p>
+    </div>
+    <div class="shopcard"><b>Fleuriste</b><br>26 rue Victor Hugo<br>54700 Pont-à-Mousson</div>
+  </div>
+</header>
+<nav class="tabs" aria-label="Services">
+  <div class="wrap">
+    <a href="#marketing" data-tab="marketing">Groupe 1 · Marketing</a>
+    <a href="#sav" data-tab="sav">Groupe 2 · SAV</a>
+    <a href="#commercial" data-tab="commercial">Groupe 3 · Commercial</a>
+  </div>
+</nav>
+
+<main>
+<!-- ===================== MARKETING ===================== -->
+<section id="v-marketing" data-view="marketing">
+ <div class="wrap">
+  <div class="intro"><h2>Équipe Marketing</h2><p>Objectif : attirer l'attention des clients avec une communication simple et visuelle. Les missions 2, 4 et 6 se font sur papier. La mission 5 est un bonus.</p></div>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 1</span><span class="tag">HTML</span><h3>Choisir le produit phare</h3></div>
+    <p class="comp"><span><b>Compétence</b> B2 – Mettre en valeur les produits et l'espace commercial</span><span><b>Tâche du RAP</b> Mise en valeur des produits et de l'espace commercial</span></p>
+    <p class="consigne">Parcourez le catalogue « Noël en fleurs » (Ressource 9), puis répondez aux questions.</p>
+    <div class="cat" id="catM"></div>
+    <p class="services">Services : emballage cadeau offert · carte à personnaliser 2 € · livraison Pont-à-Mousson 6 € · communes voisines 9 €.</p>
+    <div id="quizM"></div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 2</span><span class="tag paper">PAPIER</span><h3>Maquette de l'affiche vitrine</h3></div>
+    <p class="comp"><span><b>Compétence</b> B2 – Installer et mettre à jour la signalétique</span><span><b>Tâche du RAP</b> Installation et mise à jour de la signalétique</span></p>
+    <p class="consigne">Sur la feuille A4, dessinez au crayon la maquette de l'affiche (Ressource 1). Placez : le titre, l'image, le produit et son prix, les dates, le nom et l'adresse de la boutique. Faites valider, puis réalisez l'affiche sur Canva ou PowerPoint.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 3</span><span class="tag">HTML</span><h3>Construire le post Instagram</h3></div>
+    <p class="comp"><span><b>Compétence</b> B2 – Mettre en valeur les produits et l'espace commercial + compétences numériques</span><span><b>Tâche du RAP</b> Mise en valeur des produits et de l'espace commercial</span></p>
+    <p class="consigne">Étape 1 : préparez le post ici. La liste à droite vérifie les critères de la Ressource 2. Étape 2 : quand tout est vert, créez le vrai post sur Zeoob avec la légende préparée ci-dessous.</p>
+    <div class="two">
+      <div class="stack">
+        <label class="f" for="pSlogan">Slogan
+          <select id="pSlogan">
+            <option value="Noël en fleurs">Noël en fleurs</option>
+            <option value="Offrez un Noël qui fleurit">Offrez un Noël qui fleurit</option>
+            <option value="Venez découvrir toutes nos magnifiques créations florales spéciales pour les fêtes">Venez découvrir toutes nos magnifiques créations florales spéciales pour les fêtes</option>
+            <option value="">(pas de slogan)</option>
+          </select></label>
+        <label class="f" for="pProd">Produit mis en avant
+          <select id="pProd"></select></label>
+        <label class="f" for="pPal">Couleurs
+          <select id="pPal">
+            <option value="noel">Rouge, vert sapin, blanc</option>
+            <option value="hiver">Blanc, doré, vert</option>
+            <option value="fluo">Rose fluo, bleu, jaune, violet</option>
+          </select></label>
+        <label class="f" for="pPhrase">Phrase d'accroche <span class="hint">une phrase courte, 12 mots maximum</span>
+          <input type="text" id="pPhrase" value="Emballage cadeau offert pour tous vos bouquets !"></label>
+        <label class="opt" for="pShop"><input type="checkbox" id="pShop" checked> Afficher le nom de la boutique</label>
+        <label class="opt" for="pDates"><input type="checkbox" id="pDates" checked> Afficher la période de l'opération</label>
+        <label class="opt" for="pOrtho"><input type="checkbox" id="pOrtho"> J'ai relu l'orthographe avec mon binôme</label>
+      </div>
+      <div class="stack">
+        <div class="post" id="post"></div>
+        <p class="meter" id="postScore"></p>
+        <ul class="checks" id="postChecks"></ul>
+      </div>
+    </div>
+    <div class="zeoob">
+      <h4>Étape 2 · Réaliser le post sur Zeoob</h4>
+      <ol>
+        <li>Ouvrez <a href="https://zeoob.com" target="_blank" rel="noopener">zeoob.com</a> et choisissez <b>Instagram Post</b>.</li>
+        <li>Nom du compte : <code class="pill">arrosoir_et_compagnie</code> · Lieu : <code class="pill">Pont-à-Mousson</code></li>
+        <li>Image : une photo de bouquet ou de décoration de Noël (ou une capture de votre aperçu ci-dessus).</li>
+        <li>Légende : copiez le texte ci-dessous et collez-le dans Zeoob.</li>
+        <li>Téléchargez le post ou faites une capture d'écran, puis déposez-la dans le dossier de la classe.</li>
+      </ol>
+      <pre class="mailout" id="caption"></pre>
+      <div class="row"><button type="button" id="capCopy">Copier la légende</button><span class="hint" id="capMsg"></span></div>
+    </div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 4</span><span class="tag paper">PAPIER</span><h3>Étiquette produit</h3></div>
+    <p class="comp"><span><b>Compétence</b> B2 – Installer et mettre à jour la signalétique ; Participer aux opérations de conditionnement</span><span><b>Tâche du RAP</b> Installation et mise à jour de la signalétique ; Participation aux opérations de conditionnement</span></p>
+    <p class="consigne">Sur la fiche « Étiquette », réalisez l'étiquette d'un produit du catalogue : nom de la boutique, nom du produit, prix, une caractéristique.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 5 · bonus</span><span class="tag">HTML</span><h3>Bien installer la vitrine</h3></div>
+    <p class="comp"><span><b>Compétence</b> B2 – Mettre en valeur les produits et l'espace commercial</span><span><b>Tâche du RAP</b> Mise en valeur des produits ; Détection et retrait des produits impropres à la vente</span></p>
+    <p class="consigne">Mme Marchal installe la vitrine de Noël. Aidez-la à placer les produits en répondant aux questions.</p>
+    <div id="quizV"></div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 6</span><span class="tag paper">PAPIER</span><h3>Dessiner la vitrine de Noël</h3></div>
+    <p class="comp"><span><b>Compétence</b> B2 – Mettre en valeur les produits et l'espace commercial</span><span><b>Tâche du RAP</b> Mise en valeur des produits et de l'espace commercial</span></p>
+    <p class="consigne">Mme Marchal veut voir votre projet avant d'installer la vitrine. Dans le cadre de votre fiche, dessinez en couleurs la vitrine « Noël en fleurs » vue de la rue. Légendez au moins 5 éléments : produit phare et son prix, affiche, décor, autres produits, éclairage. Le schéma ci-dessous rappelle les règles (Ressource 10).</p>
+    <div class="vit" role="img" aria-label="Schéma d'une vitrine : trois niveaux, produit phare au centre à hauteur des yeux, composition en triangle">
+      <svg viewBox="0 0 640 330">
+        <g class="awning">
+          <path d="M40 20h560v28H40z" fill="var(--berry)"/>
+          <path d="M40 48 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0 q20 18 40 0" fill="var(--berry)"/>
+          <text x="320" y="40" text-anchor="middle" fill="var(--surface)" font-family="var(--display)" font-weight="700" font-size="16">ARROSOIR &amp; COMPAGNIE</text>
+        </g>
+        <rect x="40" y="62" width="560" height="236" rx="4" fill="var(--bg)" stroke="var(--fir)" stroke-width="5"/>
+        <g class="zones" font-size="13" fill="var(--muted)">
+          <line x1="44" x2="596" y1="132" y2="132" stroke="var(--line)" stroke-dasharray="6 6"/>
+          <line x1="44" x2="596" y1="222" y2="222" stroke="var(--line)" stroke-dasharray="6 6"/>
+          <text x="54" y="84">HAUT · décor suspendu, guirlande</text>
+          <text x="54" y="152">HAUTEUR DES YEUX · produit phare</text>
+          <text x="54" y="242">BAS · petits produits, plantes</text>
+        </g>
+        <g class="garland"><path d="M60 100 q65 30 130 0 q65 30 130 0 q65 30 130 0 q65 30 130 0" fill="none" stroke="var(--fir)" stroke-width="3"/>
+          <circle cx="125" cy="114" r="5" fill="var(--gold)"/><circle cx="255" cy="114" r="5" fill="var(--berry)"/><circle cx="385" cy="114" r="5" fill="var(--gold)"/><circle cx="515" cy="114" r="5" fill="var(--berry)"/></g>
+        <path class="tri" d="M170 286 L320 128 L470 286 Z" fill="none" stroke="var(--gold)" stroke-width="3" stroke-dasharray="8 6"/>
+        <g class="star-prod">
+          <circle cx="320" cy="190" r="34" fill="var(--berry-soft)" stroke="var(--berry)" stroke-width="2"/>
+          <text x="320" y="186" text-anchor="middle" font-size="12" font-weight="700" fill="var(--berry)">PRODUIT</text>
+          <text x="320" y="201" text-anchor="middle" font-size="12" font-weight="700" fill="var(--berry)">PHARE</text>
+          <rect x="356" y="198" width="50" height="22" rx="4" fill="var(--gold)"/><text x="381" y="213" text-anchor="middle" font-size="12" font-weight="700" fill="var(--surface)">25 €</text>
+        </g>
+        <g class="side" fill="var(--fir-soft)" stroke="var(--fir)" stroke-width="2">
+          <rect x="200" y="250" width="48" height="36" rx="4"/><rect x="392" y="250" width="48" height="36" rx="4"/>
+          <rect x="256" y="236" width="40" height="50" rx="4"/><rect x="344" y="236" width="40" height="50" rx="4"/>
+        </g>
+        <g class="poster"><rect x="500" y="150" width="78" height="100" rx="3" fill="var(--surface)" stroke="var(--gold)" stroke-width="2"/>
+          <text x="539" y="190" text-anchor="middle" font-size="11" font-weight="700" fill="var(--berry)">AFFICHE</text><text x="539" y="206" text-anchor="middle" font-size="10" fill="var(--muted)">dates + prix</text></g>
+        <path d="M40 298h560" stroke="var(--fir)" stroke-width="8"/>
+      </svg>
+    </div>
+    <ul class="checks vrules">
+      <li class="ok"><span class="dot">1</span>Le produit phare au centre, à hauteur des yeux, avec son prix.</li>
+      <li class="ok"><span class="dot">2</span>Une composition en triangle : le plus haut au centre, les plus petits sur les côtés.</li>
+      <li class="ok"><span class="dot">3</span>Trois niveaux remplis : haut, hauteur des yeux, bas.</li>
+      <li class="ok"><span class="dot">4</span>3 couleurs maximum, l'affiche et les prix visibles depuis la rue.</li>
+      <li class="ok"><span class="dot">5</span>Ni trop vide, ni trop chargée ; un éclairage sur le produit phare.</li>
+    </ul>
+  </article>
+ </div>
+</section>
+
+<!-- ===================== SAV ===================== -->
+<section id="v-sav" data-view="sav" hidden>
+ <div class="wrap">
+  <div class="intro"><h2>Équipe SAV</h2><p>Objectif : rassurer et fidéliser les clients. Les missions 2, 4 et 6 se font sur papier. La mission 5 est un bonus.</p></div>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 1</span><span class="tag">HTML</span><h3>Écouter et identifier les réclamations</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Recevoir les réclamations courantes</span><span><b>Tâche du RAP</b> Réception des réclamations clients et transmission au responsable</span></p>
+    <p class="consigne">Scannez les QR codes de votre fiche pour écouter les messages vocaux. Si vous n'avez pas de casque, ouvrez la transcription. Répondez ensuite aux questions.</p>
+    <div class="claims">
+      <div class="claim"><h4>Réclamation 1 · Mme Nadia Lefèvre</h4>
+        <details><summary>Lire la transcription</summary><blockquote>« Bonjour, c'est Mme Lefèvre. J'ai reçu ce matin la couronne de l'Avent commandée la semaine dernière. Deux bougies sont cassées et un ruban est arraché. Je l'avais achetée pour décorer ma table dimanche. Je suis très déçue. Pouvez-vous me rappeler ? Merci. »</blockquote></details></div>
+      <div class="claim"><h4>Réclamation 2 · M. Thomas Bernard</h4>
+        <details><summary>Lire la transcription</summary><blockquote>« Bonjour, M. Bernard à l'appareil. J'avais commandé un Bouquet Étoile de Noël pour l'anniversaire de ma mère, le 10 décembre. Il est arrivé le lendemain. Ce n'est pas sérieux, c'était une surprise. J'attends une réponse. »</blockquote></details></div>
+    </div>
+    <div id="quizS"></div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 2</span><span class="tag paper">PAPIER</span><h3>Préparer et enregistrer la réponse orale</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Recevoir les réclamations courantes</span><span><b>Tâche du RAP</b> Réception des réclamations clients et transmission au responsable</span></p>
+    <p class="consigne">Sur la fiche « Réponse orale », écrivez pour chaque client les excuses, la solution et le remerciement. Enregistrez-vous ensuite sur Vocaroo.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 3</span><span class="tag">HTML</span><h3>Rédiger le mail de réponse</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Accompagner le parcours client dans un contexte omnicanal ; Recevoir les réclamations courantes</span><span><b>Tâche du RAP</b> Réception des réclamations clients et transmission au responsable</span></p>
+    <p class="consigne">Choisissez le client, puis remplissez chaque partie du mail (Ressource 4). Le mail se construit à droite. Quand tous les points sont verts, copiez-le.</p>
+    <div class="two">
+      <div class="stack">
+        <label class="f" for="mClient">Client
+          <select id="mClient"><option value="lef">Mme Nadia Lefèvre – couronne abîmée</option><option value="ber">M. Thomas Bernard – livraison en retard</option></select></label>
+        <label class="f" for="mObjet">Objet <span class="hint">court et précis</span><input type="text" id="mObjet" placeholder="Réponse à votre réclamation du…"></label>
+        <label class="f" for="mAppel">Formule d'appel<input type="text" id="mAppel" placeholder="Madame …,"></label>
+        <label class="f" for="mIntro">Introduction <span class="hint">rappelez la raison du mail</span><textarea id="mIntro" placeholder="Nous faisons suite à votre message concernant…"></textarea></label>
+        <label class="f" for="mDev">Excuses et solution<textarea id="mDev" placeholder="Nous sommes désolés… Nous vous proposons…"></textarea></label>
+        <label class="f" for="mConc">Conclusion <span class="hint">remerciez le client</span><textarea id="mConc" placeholder="Nous vous remercions…"></textarea></label>
+        <label class="f" for="mPol">Formule de politesse<input type="text" id="mPol" placeholder="Cordialement,"></label>
+        <label class="f" for="mSig">Signature<input type="text" id="mSig" placeholder="L'équipe SAV – …"></label>
+      </div>
+      <div class="stack">
+        <pre class="mailout" id="mailOut"></pre>
+        <ul class="checks" id="mailChecks"></ul>
+        <div class="row"><button type="button" id="mCopy">Copier le mail</button><span id="mCopyMsg" class="hint"></span></div>
+      </div>
+    </div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 4</span><span class="tag paper">PAPIER</span><h3>Remplir le bon de commande</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Accompagner le parcours client dans un contexte omnicanal</span><span><b>Tâche du RAP</b> Prise de commande du client</span></p>
+    <p class="consigne">Mme Sophie Girard commande par téléphone. Remplissez à la main le bon de commande (Ressource 5) avec les informations de votre fiche et calculez le total.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 5 · bonus</span><span class="tag">HTML</span><h3>Vérifier son bon de commande</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Accompagner le parcours client dans un contexte omnicanal</span><span><b>Tâche du RAP</b> Prise de commande du client</span></p>
+    <p class="consigne">Recopiez les lignes de votre bon de commande papier. La page calcule les montants. Entrez ensuite le total que vous aviez trouvé et vérifiez.</p>
+    <div class="stack" id="bc"></div>
+    <div class="row"><label class="f" for="bcTot" style="max-width:260px">Mon total sur papier (€)<input type="text" id="bcTot" inputmode="decimal" placeholder="ex. 98"></label></div>
+    <div class="row"><button type="button" id="bcCheck">Vérifier ma commande</button></div>
+    <p class="feedback mid" id="bcFeed" aria-live="polite">Remplissez les lignes puis cliquez sur Vérifier.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 6</span><span class="tag paper">PAPIER</span><h3>Préparer la livraison de Mme Girard</h3></div>
+    <p class="comp"><span><b>Compétence</b> B1 – Préparer les commandes destinées aux clients</span><span><b>Tâche du RAP</b> Préparation des commandes destinées aux clients</span></p>
+    <p class="consigne">La commande de Mme Girard part en livraison le 20 décembre. Sur votre fiche, cochez chaque contrôle avant départ, puis remplissez l'étiquette du colis : destinataire, adresse, téléphone, date et créneau, nombre d'articles, mention de manipulation.</p>
+    <div class="van" aria-hidden="true">
+      <svg viewBox="0 0 640 120">
+        <path d="M0 104h640" stroke="var(--line)" stroke-width="3" stroke-dasharray="18 12" class="road"/>
+        <g class="truck">
+          <rect x="0" y="30" width="120" height="60" rx="6" fill="var(--fir)"/>
+          <path d="M120 48h34l22 22v20h-56z" fill="var(--fir)"/><path d="M126 54h24l14 16h-38z" fill="var(--fir-soft)"/>
+          <text x="60" y="58" text-anchor="middle" font-size="11" font-weight="700" fill="var(--surface)">ARROSOIR &amp; CIE</text>
+          <text x="60" y="76" text-anchor="middle" font-size="10" fill="var(--gold)">FRAGILE · FLEURS FRAÎCHES</text>
+          <circle cx="34" cy="94" r="12" fill="var(--ink)"/><circle cx="34" cy="94" r="5" fill="var(--line)"/>
+          <circle cx="146" cy="94" r="12" fill="var(--ink)"/><circle cx="146" cy="94" r="5" fill="var(--line)"/>
+          <circle cx="98" cy="22" r="8" fill="var(--berry)"/><circle cx="110" cy="18" r="7" fill="var(--berry)"/><path d="M104 28v8" stroke="var(--fir)" stroke-width="3"/>
+        </g>
+      </svg>
+    </div>
+  </article>
+ </div>
+</section>
+
+<!-- ===================== COMMERCIAL ===================== -->
+<section id="v-commercial" data-view="commercial" hidden>
+ <div class="wrap">
+  <div class="intro"><h2>Équipe Commerciale</h2><p>Objectif : accueillir et conseiller les clients en magasin. Les missions 1, 4 et 5 se font sur papier. La mission 5 est un bonus.</p></div>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 1</span><span class="tag paper">PAPIER</span><h3>Préparer l'accueil</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Préparer son environnement de travail ; Prendre contact avec le client</span><span><b>Tâche du RAP</b> Préparation de l'environnement de travail ; Accueil et prise en charge du client</span></p>
+    <p class="consigne">Complétez la fiche « Le comportement d'accueil du vendeur » (Ressource 6) : phrase d'accueil, regard, sourire, tenue, points d'attention.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 2</span><span class="tag">HTML</span><h3>Classer les questions</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Conseiller le client</span><span><b>Tâche du RAP</b> Orientation du client vers le produit adapté</span></p>
+    <p class="consigne">Pour chaque question du vendeur, choisissez son type (Ressource 7), puis vérifiez.</p>
+    <div class="sort" id="sort"></div>
+    <div class="row"><button type="button" id="sortCheck">Vérifier</button><button type="button" class="ghost" id="sortReset">Recommencer</button><span class="score" id="sortScore"></span></div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 3</span><span class="tag">HTML</span><h3>Trouver le bon produit</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Conseiller le client</span><span><b>Tâche du RAP</b> Orientation du client vers le produit adapté ; Information et conseil sur les produits et services</span></p>
+    <p class="consigne">Choisissez votre profil client (Ressource 8). Les produits trop chers sont grisés. Cliquez sur le produit à proposer, choisissez un service et écrivez votre argument.</p>
+    <div class="profiles" id="profiles"></div>
+    <div class="cat" id="catC"></div>
+    <div class="two">
+      <div class="stack">
+        <label class="f" for="cServ">Service complémentaire
+          <select id="cServ"><option value="">— choisir —</option><option>Emballage cadeau offert</option><option>Carte à personnaliser (2 €)</option><option>Livraison Pont-à-Mousson (6 €)</option><option>Livraison communes voisines (9 €)</option></select></label>
+        <label class="f" for="cArg">Mon argument pour le client <span class="hint">une phrase</span><textarea id="cArg" placeholder="Je vous conseille… parce que…"></textarea></label>
+      </div>
+      <div class="stack" aria-live="polite"><p class="feedback mid" id="cFeed">Choisissez un profil puis un produit.</p><p class="explain" id="cTotal"></p></div>
+    </div>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 4</span><span class="tag paper">PAPIER</span><h3>Jeu de rôles</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Prendre contact avec le client ; Conseiller le client · B2 – Mettre en valeur l'espace commercial</span><span><b>Tâche du RAP</b> Accueil et prise en charge du client ; Proposition des services associés et complémentaires</span></p>
+    <ul class="paperlist">
+      <li>Un élève joue le client (profil de la mission 3), l'autre le vendeur. Puis on inverse.</li>
+      <li>Le vendeur accueille, pose au moins deux questions, propose le produit et un service complémentaire.</li>
+      <li>L'observateur remplit la grille d'évaluation du dossier papier.</li>
+    </ul>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 5 · bonus</span><span class="tag paper">PAPIER</span><h3>Encaisser et prendre congé</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Finaliser la prise en charge du client</span><span><b>Tâche du RAP</b> Encaissement ; Finalisation de la prise en charge du client</span></p>
+    <p class="consigne">Sur la fiche « Encaissement », calculez le total à payer pour votre client (produit + service), puis la monnaie à rendre s'il paie avec un billet de 50 €. Écrivez ensuite la phrase de prise de congé que vous direz au client.</p>
+  </article>
+
+  <article class="mission">
+    <div class="mhead"><span class="mnum">Mission 6</span><span class="tag">HTML</span><h3>Le client hésite</h3></div>
+    <p class="comp"><span><b>Compétence</b> B3 – Conseiller le client</span><span><b>Tâche du RAP</b> Information et conseil des clients sur les produits et services offerts et associés à la vente</span></p>
+    <p class="consigne">Cinq clients hésitent avant d'acheter. Pour chacun, choisissez la meilleure réponse du vendeur : polie, rassurante et avec une solution. Réutilisez-en une pendant le jeu de rôles.</p>
+    <div id="quizO"></div>
+  </article>
+ </div>
+</section>
+</main>
+<footer><div class="wrap">Scénario conçu par Marie Frison. Les grilles d'autoévaluation et d'évaluation sont dans le dossier papier. Scénario pédagogique. La boutique est réelle ; le catalogue, les prix, les clients et les réclamations sont fictifs.</div></footer>
+
+<script>
+const RM=matchMedia("(prefers-reduced-motion: reduce)").matches;
+/* snow + lights */
+(function(){
+ const h=document.querySelector("header.band"),c=document.createElement("canvas");c.id="snow";h.prepend(c);
+ const L=document.createElement("div");L.className="lights";L.setAttribute("aria-hidden","true");L.innerHTML="<i></i>".repeat(40);h.appendChild(L);
+ const x=c.getContext("2d");let W,H,fl=[];
+ function size(){W=c.width=h.clientWidth;H=c.height=h.clientHeight;fl=Array.from({length:Math.round(W/18)},()=>({x:Math.random()*W,y:Math.random()*H,r:1+Math.random()*2.6,s:.3+Math.random()*.8,d:Math.random()*6}))}
+ function draw(){x.clearRect(0,0,W,H);x.fillStyle="rgba(255,255,255,.75)";fl.forEach(f=>{x.beginPath();x.arc(f.x,f.y,f.r,0,7);x.fill()})}
+ function step(){fl.forEach(f=>{f.y+=f.s;f.d+=.02;f.x+=Math.sin(f.d)*.4;if(f.y>H+4){f.y=-4;f.x=Math.random()*W}});draw();requestAnimationFrame(step)}
+ size();addEventListener("resize",size);RM?draw():step();
+})();
+/* confetti */
+let cv,cx,parts=[],running=false;
+function confetti(el,big){
+ if(RM)return;
+ if(!cv){cv=document.createElement("canvas");cv.id="confetti";document.body.appendChild(cv);cx=cv.getContext("2d")}
+ cv.width=innerWidth;cv.height=innerHeight;
+ const r=el&&el.getBoundingClientRect?el.getBoundingClientRect():{left:innerWidth/2,top:innerHeight/2,width:0,height:0};
+ const ox=r.left+r.width/2,oy=r.top+r.height/2,col=["#b3283b","#1f5a3d","#e3b955","#ffffff","#ef7b8a","#6cc292"];
+ for(let i=0;i<(big?220:90);i++)parts.push({x:big?Math.random()*innerWidth:ox,y:big?-10:oy,vx:big?(Math.random()-.5)*4:(Math.random()-.5)*12,vy:big?Math.random()*3:-4-Math.random()*8,g:.22,s:5+Math.random()*6,a:Math.random()*6,va:(Math.random()-.5)*.3,c:col[i%col.length],t:0,shape:i%3});
+ if(!running){running=true;requestAnimationFrame(tick)}
+}
+function tick(){
+ cx.clearRect(0,0,cv.width,cv.height);
+ parts=parts.filter(p=>p.t<160&&p.y<cv.height+20);
+ parts.forEach(p=>{p.t++;p.vy+=p.g;p.vx*=.99;p.x+=p.vx;p.y+=p.vy;p.a+=p.va;cx.save();cx.translate(p.x,p.y);cx.rotate(p.a);cx.fillStyle=p.c;cx.globalAlpha=Math.min(1,(160-p.t)/40);
+  if(p.shape===0)cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);else if(p.shape===1){cx.beginPath();cx.ellipse(0,0,p.s/2,p.s/4,0,0,7);cx.fill()}else{cx.beginPath();cx.arc(0,0,p.s/3,0,7);cx.fill()}cx.restore()});
+ if(parts.length)requestAnimationFrame(tick);else{running=false;cx.clearRect(0,0,cv.width,cv.height)}
+}
+function countUp(el,v,max){el.classList.remove("up");void el.offsetWidth;el.classList.add("up");if(RM){el.textContent=`Score : ${v} / ${max}`;return}let i=0;const t=setInterval(()=>{el.textContent=`Score : ${i} / ${max}`;if(i++>=v)clearInterval(t)},90)}
+/* progress */
+let done={};try{done=JSON.parse(localStorage.getItem("arrosoir-missions")||"{}")||{}}catch(e){}
+function save(){try{localStorage.setItem("arrosoir-missions",JSON.stringify(done))}catch(e){}}
+const giftSvg=`<svg viewBox="0 0 40 44" aria-hidden="true"><g class="star"><path d="M20 2l3 7 7 .5-5.5 4.5 2 7-6.5-4-6.5 4 2-7L10 9.5l7-.5z" fill="var(--gold)"/></g><rect x="6" y="22" width="28" height="20" rx="2" fill="var(--berry)"/><rect x="18" y="22" width="4" height="20" fill="var(--gold)"/><g class="lid"><rect x="3" y="15" width="34" height="8" rx="2" fill="var(--berry)"/><rect x="18" y="15" width="4" height="8" fill="var(--gold)"/><path d="M20 15c-4-6-10-5-8-1s8 1 8 1zm0 0c4-6 10-5 8-1s-8 1-8 1z" fill="var(--gold)"/></g></svg>`;
+document.querySelectorAll("[data-view]").forEach(sec=>{
+ const g=sec.dataset.view;
+ sec.querySelectorAll(".mission").forEach(a=>{a.dataset.g=g;a.dataset.n=parseInt(a.querySelector(".mnum").textContent.replace(/\D+/,""),10);
+  if(a.querySelector(".tag.paper")){const r=document.createElement("div");r.className="row";r.innerHTML=`<button type="button" class="ghost validate">Mission validée par le professeur</button>`;a.appendChild(r);r.querySelector("button").onclick=e=>win(g,+a.dataset.n,e.target,true)}});
+ const t=document.createElement("div");t.className="track";t.dataset.g=g;const N=sec.querySelectorAll(".mission").length;t.dataset.total=N;
+ t.innerHTML=`<div class="gifts">${Array.from({length:N},(_,i)=>i+1).map(n=>`<span class="gift" data-n="${n}" title="Mission ${n}">${giftSvg}<span>${n}</span></span>`).join("")}</div><span class="tcount" aria-live="polite"></span><button type="button" class="ghost small">Recommencer</button>`;
+ t.querySelector("button").onclick=()=>{Object.keys(done).filter(k=>k.startsWith(g)).forEach(k=>delete done[k]);save();markAll()};
+ sec.querySelector(".intro").appendChild(t);
+});
+function markAll(){
+ document.querySelectorAll(".track").forEach(t=>{const g=t.dataset.g;let n=0;
+  t.querySelectorAll(".gift").forEach(gf=>{const d=!!done[g+gf.dataset.n];if(d)n++;gf.classList.toggle("done",d)});
+  const T=+t.dataset.total;t.querySelector(".tcount").textContent=`${n} / ${T} missions réussies`;
+  let b=t.querySelector(".tdone");if(n===T&&!b){b=document.createElement("p");b.className="tdone";b.textContent="Bravo l'équipe, toutes les missions sont réussies !";t.appendChild(b)}if(n<T&&b)b.remove()});
+ document.querySelectorAll(".mission").forEach(a=>{const d=!!done[a.dataset.g+a.dataset.n];a.classList.toggle("won",d);let r=a.querySelector(".ribbon");
+  if(d&&!r){r=document.createElement("span");r.className="ribbon";r.textContent="Réussie";a.querySelector(".mhead").insertBefore(r,a.querySelector(".mhead h3"))}if(!d&&r)r.remove();
+  const v=a.querySelector(".validate");if(v){v.disabled=d;v.textContent=d?"Mission validée ✓":"Mission validée par le professeur"}});
+}
+function win(g,n,el,always){
+ const k=g+n,first=!done[k];done[k]=1;save();markAll();
+ if(first||always)confetti(el);
+ const T=+document.querySelector(`.track[data-g="${g}"]`).dataset.total;if(first&&Array.from({length:T},(_,i)=>i+1).every(i=>done[g+i]))setTimeout(()=>confetti(null,true),500);
+}
+/* post likes */
+let postOk=false;
+function postFx(ok){
+ const post=document.getElementById("post");post.classList.remove("bump");void post.offsetWidth;post.classList.add("bump");
+ let L=document.getElementById("likes");if(!L){L=document.createElement("p");L.id="likes";L.className="likes";L.innerHTML=`<span class="heart" aria-hidden="true">♥</span><span><b id="likeN">0</b> j'aime</span>`;post.after(L)}
+ if(ok&&!postOk){L.classList.add("on");let i=0;const t=setInterval(()=>{i+=7;document.getElementById("likeN").textContent=Math.min(i,128);if(i>=128)clearInterval(t)},40);win("marketing",3,post)}
+ if(!ok){L.classList.remove("on");document.getElementById("likeN").textContent="0"}
+ postOk=ok;
+}
+/* mail */
+let mailOk=false;
+function mailFx(ok){
+ let m=document.getElementById("mailSent");
+ if(!m){m=document.createElement("p");m.id="mailSent";m.className="sent";m.hidden=true;m.innerHTML=`<svg viewBox="0 0 40 30" aria-hidden="true"><rect x="2" y="4" width="36" height="24" rx="3" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/><path d="M3 6l17 13L37 6" fill="none" stroke="var(--gold)" stroke-width="2"/><circle cx="20" cy="17" r="4" fill="var(--berry)"/></svg>Mail prêt à être envoyé !`;document.getElementById("mailOut").after(m)}
+ m.hidden=!ok;
+ if(ok&&!mailOk){m.classList.remove("go");void m.offsetWidth;m.classList.add("go");win("sav",3,m)}
+ mailOk=ok;
+}
+/* client bubble */
+const quotes={martin:"Bonsoir ! Je suis pressée, il me faut quelque chose pour un dîner chez des amis ce soir. Pas plus de 25 €.",lambert:"Bonjour, je cherche un beau cadeau de Noël pour mon épouse, quelque chose d'élégant. Je peux mettre 60 €.",clara:"Salut ! C'est pour un Secret Santa avec ma meilleure amie. Un truc joli et coloré, mais 20 € maximum.",rossi:"Bonjour, je reçois toute la famille pour Noël et je voudrais décorer ma table. J'ai 45 €."};
+let typer;
+(function(){const w=document.createElement("div");w.className="client";w.innerHTML=`<svg viewBox="0 0 46 46" aria-hidden="true"><circle cx="23" cy="23" r="23" fill="var(--gold-soft)"/><circle cx="23" cy="18" r="8" fill="var(--gold)"/><path d="M9 40c3-9 25-9 28 0" fill="var(--gold)"/></svg><p class="bubble" id="bubble" aria-live="polite">Choisissez un client : il vous dira ce qu'il cherche.</p>`;document.getElementById("profiles").after(w)})();
+function say(id){
+ const b=document.getElementById("bubble"),q=quotes[id];clearInterval(typer);
+ if(RM){b.textContent="« "+q+" »";return}
+ let i=0;typer=setInterval(()=>{b.innerHTML="« "+esc(q.slice(0,i))+(i<q.length?'<span class="cur"></span>':" »");if(i++>=q.length)clearInterval(typer)},28);
+}
+function checkC(){const fb=document.getElementById("cFeed");if(fb.classList.contains("ok")&&document.getElementById("cServ").value&&document.getElementById("cArg").value.trim().length>10)win("commercial",3,fb)}
+document.addEventListener("input",e=>{if(e.target.id==="cArg")checkC()});
+</script>
+<script>
+const products=[
+ {id:"etp",name:"Bouquet Étoile de Noël – Petit",desc:"Roses rouges, eucalyptus, pommes de pin",price:25,g:"bouquet"},
+ {id:"etm",name:"Bouquet Étoile de Noël – Moyen",desc:"Roses rouges, eucalyptus, sapin",price:35,g:"bouquet"},
+ {id:"etg",name:"Bouquet Étoile de Noël – Grand",desc:"Roses rouges, eucalyptus, sapin, baies",price:55,g:"bouquet"},
+ {id:"flo",name:"Bouquet « Flocon »",desc:"12 roses blanches et gypsophile",price:48,g:"white"},
+ {id:"cou",name:"Couronne de l'Avent",desc:"Sapin naturel, 4 bougies, rubans dorés",price:42,g:"wreath"},
+ {id:"cen",name:"Centre de table « Nuit d'hiver »",desc:"Bougie blanche, houx, mousse",price:29,g:"candle"},
+ {id:"ama",name:"Amaryllis rouge en pot",desc:"Hauteur 45 cm, cache-pot doré",price:29,g:"pot"},
+ {id:"sap",name:"Petit sapin en pot",desc:"60 cm, se replante au jardin",price:24,g:"tree"},
+ {id:"sec",name:"Bouquet sec « Cannelle & Coton »",desc:"Fleurs séchées, coton, cannelle",price:19,g:"dry"},
+ {id:"poi",name:"Poinsettia",desc:"Plante en pot, feuilles rouges",price:15,g:"poin"}
+];
+function glyph(g){
+ const r="var(--berry)",f="var(--fir)",o="var(--gold)";
+ const m={
+  bouquet:`<path d="M26 50 L18 28 M26 50 L26 26 M26 50 L34 28" stroke="${f}" stroke-width="2.5" fill="none"/><circle cx="18" cy="22" r="7" fill="${r}"/><circle cx="34" cy="22" r="7" fill="${r}"/><circle cx="26" cy="15" r="7" fill="${r}"/><path d="M19 38 L33 38 L29 50 L23 50Z" fill="${o}"/>`,
+  white:`<path d="M26 50 L18 28 M26 50 L26 26 M26 50 L34 28" stroke="${f}" stroke-width="2.5" fill="none"/><circle cx="18" cy="22" r="7" fill="var(--line)" stroke="${f}"/><circle cx="34" cy="22" r="7" fill="var(--line)" stroke="${f}"/><circle cx="26" cy="15" r="7" fill="var(--line)" stroke="${f}"/>`,
+  wreath:`<circle cx="26" cy="28" r="17" fill="none" stroke="${f}" stroke-width="8"/><rect x="11" y="6" width="4" height="12" fill="${o}"/><rect x="37" y="6" width="4" height="12" fill="${o}"/><circle cx="26" cy="45" r="3.5" fill="${r}"/>`,
+  candle:`<ellipse cx="26" cy="44" rx="20" ry="6" fill="${f}"/><rect x="20" y="20" width="12" height="22" fill="var(--line)" stroke="${f}"/><path d="M26 12 q4 5 0 8 q-4 -3 0 -8Z" fill="${o}"/><circle cx="12" cy="40" r="3" fill="${r}"/><circle cx="40" cy="40" r="3" fill="${r}"/>`,
+  pot:`<path d="M26 34 L26 12" stroke="${f}" stroke-width="3"/><path d="M26 14 l-9 -6 M26 14 l9 -6 M26 14 l0 -9" stroke="${r}" stroke-width="5" stroke-linecap="round"/><path d="M15 34 L37 34 L33 50 L19 50Z" fill="${o}"/>`,
+  tree:`<path d="M26 6 L40 40 L12 40Z" fill="${f}"/><rect x="22" y="40" width="8" height="10" fill="${o}"/>`,
+  dry:`<path d="M26 50 L16 22 M26 50 L26 18 M26 50 L36 22" stroke="${o}" stroke-width="2.5" fill="none"/><circle cx="16" cy="18" r="5" fill="var(--line)" stroke="${o}"/><circle cx="36" cy="18" r="5" fill="var(--line)" stroke="${o}"/><path d="M22 12 l8 0" stroke="var(--warn)" stroke-width="4" stroke-linecap="round"/>`,
+  poin:`<g fill="${r}"><ellipse cx="26" cy="16" rx="5" ry="10"/><ellipse cx="14" cy="26" rx="10" ry="5"/><ellipse cx="38" cy="26" rx="10" ry="5"/><ellipse cx="19" cy="36" rx="5" ry="8" transform="rotate(30 19 36)"/><ellipse cx="33" cy="36" rx="5" ry="8" transform="rotate(-30 33 36)"/></g><circle cx="26" cy="27" r="3" fill="${o}"/>`
+ };
+ return `<svg viewBox="0 0 52 54" aria-hidden="true">${m[g]}</svg>`;
+}
+function renderCat(el,opts={}){
+ el.innerHTML=products.map(p=>`<div class="prod${opts.budget&&p.price>opts.budget?" off":""}${opts.pick===p.id?" pick":""}" data-id="${p.id}" ${opts.clickable?'role="button" tabindex="0"':""}>${glyph(p.g)}<span class="n">${p.name}</span><span class="d">${p.desc}</span><span class="p">${p.price} €</span></div>`).join("");
+}
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* generic quiz */
+function quiz(el,qs,key,onWin){
+ el.innerHTML=qs.map((q,i)=>`<fieldset class="q" style="border:0;margin:0;min-width:0"><legend class="qt">${i+1}. ${q.q}</legend><div class="opts">${q.o.map((o,j)=>`<label class="opt" for="${key}${i}_${j}"><input type="radio" name="${key}${i}" id="${key}${i}_${j}" value="${j}"> <span>${o}</span></label>`).join("")}</div><p class="explain" hidden></p></fieldset>`).join("")+`<div class="row"><button type="button">Vérifier mes réponses</button><span class="score" aria-live="polite"></span></div>`;
+ el.querySelector("button").onclick=()=>{
+  let s=0;
+  el.querySelectorAll("fieldset").forEach((fs,i)=>{
+   const pick=fs.querySelector("input:checked");
+   fs.querySelectorAll(".opt").forEach((l,j)=>{l.classList.remove("good","wrong"); if(j===qs[i].a)l.classList.add("good"); else if(pick&&+pick.value===j)l.classList.add("wrong");});
+   if(pick&&+pick.value===qs[i].a)s++;
+   const ex=fs.querySelector(".explain");ex.hidden=false;ex.textContent=qs[i].e;
+  });
+  countUp(el.querySelector(".score"),s,qs.length);if(s===qs.length&&onWin)onWin(el.querySelector(".score"));
+ };
+}
+
+/* ---------- Marketing ---------- */
+renderCat(document.getElementById("catM"));
+quiz(document.getElementById("quizM"),[
+ {q:"Quel produit choisir comme produit phare de l'affiche ?",o:["Le Poinsettia à 15 €","Le Bouquet Étoile de Noël, à partir de 25 €","Le Petit sapin en pot à 24 €"],a:1,e:"Le Bouquet Étoile de Noël porte le nom de l'opération, existe en 3 tailles et donne un prix d'appel à 25 €."},
+ {q:"Quelle information n'est PAS obligatoire sur l'affiche ?",o:["Les dates de l'opération","Le prix du produit phare","La liste de toutes les fleurs du bouquet"],a:2,e:"L'affiche doit rester courte : nom, slogan, produit + prix, dates, adresse."},
+ {q:"Combien de couleurs principales au maximum ?",o:["3","5","Autant que l'on veut"],a:0,e:"Trois couleurs maximum (rouge, vert sapin, blanc ou doré) pour une affiche harmonieuse."},
+ {q:"Comment mettre le prix en valeur ?",o:["En petit, en bas de l'affiche","En gros, dans une couleur qui ressort","On ne l'écrit pas"],a:1,e:"Le prix doit se voir de loin : grand, contrasté, près du produit."}
+],"qm",el=>win("marketing",1,el,true));
+
+const pProd=document.getElementById("pProd");
+pProd.innerHTML=products.map(p=>`<option value="${p.id}"${p.id==="etp"?" selected":""}>${p.name} – ${p.price} €</option>`).join("");
+const palettes={
+ noel:{bg:"#1f5a3d",fg:"#ffffff",badge:"#b3283b",bfg:"#ffffff",ok:true},
+ hiver:{bg:"#f6f3ea",fg:"#1f3a2c",badge:"#b98a1e",bfg:"#ffffff",ok:true},
+ fluo:{bg:"#ff3fb4",fg:"#2b33ff",badge:"#fff200",bfg:"#7a00d6",ok:false}
+};
+function words(s){return s.trim()?s.trim().split(/\s+/).length:0}
+function updPost(){
+ const sl=document.getElementById("pSlogan").value,pr=products.find(p=>p.id===pProd.value),pal=palettes[document.getElementById("pPal").value],
+  ph=document.getElementById("pPhrase").value,shop=document.getElementById("pShop").checked,dates=document.getElementById("pDates").checked,ortho=document.getElementById("pOrtho").checked;
+ const post=document.getElementById("post");
+ post.style.background=pal.bg;post.style.color=pal.fg;
+ post.innerHTML=`<p class="sl">${esc(sl)||"&nbsp;"}</p><div class="mid">${glyph(pr.g).replace("<svg",`<svg style="filter:drop-shadow(0 2px 0 rgba(0,0,0,.15))"`)}<div class="badge" style="background:${pal.badge};color:${pal.bfg}"><span>${esc(pr.name.replace(/ –.*$/,"").replace(/^Bouquet /,""))}</span><b>${pr.price} €</b></div></div><div class="foot"><span class="ph">${esc(ph)}</span>${dates?"<span>Du 28 novembre au 24 décembre</span>":""}${shop?'<span class="shop">Arrosoir & Compagnie · Pont-à-Mousson</span>':""}</div>`;
+ const c=[
+  [shop,"Nom de la boutique présent"],
+  [sl&&words(sl)<=5,"Slogan court et accrocheur (5 mots maximum)"],
+  [true,"Produit phare et prix affichés"],
+  [dates,"Période de l'opération indiquée"],
+  [words(ph)>0&&words(ph)<=12,"Une seule phrase courte (12 mots maximum)"],
+  [pal.ok,"Couleurs de Noël harmonieuses (3 maximum)"],
+  [ortho,"Orthographe relue"]
+ ];
+ const n=c.filter(x=>x[0]).length;
+ document.getElementById("postChecks").innerHTML=c.map(([ok,t])=>`<li class="${ok?"ok":""}"><span class="dot">${ok?"✓":"✗"}</span>${t}</li>`).join("");
+ document.getElementById("postScore").textContent=n===c.length?"Tous les critères sont respectés : faites votre capture d'écran.":`${n} critères sur ${c.length} respectés`;
+ postFx(n===c.length);updCaption(sl,pr,ph,dates);
+}
+["pSlogan","pProd","pPal","pPhrase","pShop","pDates","pOrtho"].forEach(id=>document.getElementById(id).addEventListener("input",updPost));
+updPost();
+
+/* ---------- SAV ---------- */
+quiz(document.getElementById("quizS"),[
+ {q:"Réclamation 1 : quel est le problème de Mme Lefèvre ?",o:["La couronne est arrivée en retard","La couronne est abîmée (bougies cassées, ruban arraché)","Elle a reçu le mauvais produit"],a:1,e:"Le produit est arrivé à l'heure, mais abîmé."},
+ {q:"Réclamation 1 : quelle solution proposer ?",o:["Lui demander de réparer elle-même la couronne","Remplacer la couronne et la livrer gratuitement avant dimanche","Lui dire que ce n'est pas la faute de la boutique"],a:1,e:"La solution répond au besoin : une couronne en bon état avant son repas de dimanche."},
+ {q:"Réclamation 2 : quel type de réclamation ?",o:["Retard de livraison","Produit abîmé","Erreur de prix"],a:0,e:"Le bouquet est arrivé un jour après la date prévue."},
+ {q:"Réclamation 2 : quelle solution est la plus adaptée ?",o:["S'excuser, expliquer la forte demande et offrir un geste commercial (livraison remboursée ou bon de 10 €)","Ne pas répondre, le bouquet a été livré","Proposer de relivrer le même bouquet aujourd'hui"],a:0,e:"On ne peut pas revenir sur la date : on s'excuse et on fait un geste pour garder le client."},
+ {q:"Dans quel ordre traiter une réclamation ?",o:["Proposer une solution → écouter → s'excuser","Écouter → s'excuser → proposer une solution → remercier","S'excuser → remercier → écouter"],a:1,e:"La méthode en 4 étapes de la Ressource 3."}
+],"qs",el=>win("sav",1,el,true));
+
+const clients={lef:{appel:/madame\s+lef[eè]vre/i,name:"Mme Nadia Lefèvre",mail:"nadia.lefevre@exemple.fr"},ber:{appel:/monsieur\s+bernard/i,name:"M. Thomas Bernard",mail:"thomas.bernard@exemple.fr"}};
+const mIds=["mClient","mObjet","mAppel","mIntro","mDev","mConc","mPol","mSig"];
+function v(id){return document.getElementById(id).value.trim()}
+function updMail(){
+ const cl=clients[v("mClient")];
+ const txt=`À : ${cl.mail}\nDe : sav@arrosoir-et-compagnie.fr\nObjet : ${v("mObjet")}\n\n${v("mAppel")}\n\n${v("mIntro")}\n\n${v("mDev")}\n\n${v("mConc")}\n\n${v("mPol")}\n${v("mSig")}`;
+ document.getElementById("mailOut").textContent=txt;
+ const c=[
+  [/r[ée]clamation/i.test(v("mObjet")),"L'objet parle de la réclamation"],
+  [cl.appel.test(v("mAppel")),`La formule d'appel nomme le client (${cl.name.startsWith("Mme")?"Madame Lefèvre":"Monsieur Bernard"})`],
+  [v("mIntro").length>15,"L'introduction rappelle le contexte"],
+  [/(d[ée]sol|excus)/i.test(v("mDev")),"Le mail contient des excuses"],
+  [/(propos|offr|rempla|rembours|bon d'achat|geste)/i.test(v("mDev")),"Le mail propose une solution"],
+  [/merci/i.test(v("mConc")),"La conclusion remercie le client"],
+  [/(cordialement|salutations|consid[ée]ration)/i.test(v("mPol")),"Formule de politesse adaptée"],
+  [/arrosoir/i.test(v("mSig")),"Signature avec le nom de la boutique"]
+ ];
+ document.getElementById("mailChecks").innerHTML=c.map(([ok,t])=>`<li class="${ok?"ok":""}"><span class="dot">${ok?"✓":"✗"}</span>${t}</li>`).join("");
+ mailFx(c.every(x=>x[0]));
+}
+mIds.forEach(id=>document.getElementById(id).addEventListener("input",updMail));updMail();
+document.getElementById("mCopy").onclick=()=>{
+ const t=document.getElementById("mailOut").textContent,msg=document.getElementById("mCopyMsg");
+ navigator.clipboard.writeText(t).then(()=>msg.textContent="Mail copié.").catch(()=>{const r=document.createRange();r.selectNodeContents(document.getElementById("mailOut"));const s=getSelection();s.removeAllRanges();s.addRange(r);msg.textContent="Texte sélectionné : faites Ctrl + C.";});
+};
+
+quiz(document.getElementById("quizV"),[
+ {q:"Où placer le produit phare dans la vitrine ?",o:["Au sol, devant la vitre","À hauteur des yeux, au centre","Tout au fond, en hauteur"],a:1,e:"À hauteur des yeux, c'est la zone que les passants voient en premier."},
+ {q:"Comment regrouper les produits ?",o:["Au hasard","Par couleur ou par thème (Noël, table de fête)","Du plus cher au moins cher"],a:1,e:"Un regroupement par couleur ou par thème rend la vitrine lisible et harmonieuse."},
+ {q:"Que faire des prix en vitrine ?",o:["Les cacher pour faire entrer les clients","Les afficher lisiblement sur chaque produit","Afficher seulement le produit le plus cher"],a:1,e:"L'affichage des prix est obligatoire et doit être lisible depuis l'extérieur."},
+ {q:"Une rose est fanée dans la vitrine. Que faites-vous ?",o:["Je la retire tout de suite","Je la laisse jusqu'à la fin de l'opération","Je la cache derrière un autre bouquet"],a:0,e:"La vitrine donne l'image de la boutique : les fleurs abîmées sont retirées chaque jour."},
+ {q:"Quand changer la vitrine ?",o:["Une fois par an","À chaque saison ou nouvelle opération","Jamais"],a:1,e:"On renouvelle la vitrine à chaque temps fort : Toussaint, Noël, Saint-Valentin…"}
+],"qv",el=>win("marketing",5,el,true));
+
+const bcItems=[...products.map(p=>({id:p.id,name:p.name,price:p.price})),{id:"liv",name:"Livraison Pont-à-Mousson",price:6},{id:"liv2",name:"Livraison communes voisines",price:9},{id:"carte",name:"Carte à personnaliser",price:2}];
+const bcEl=document.getElementById("bc");
+bcEl.innerHTML=[0,1,2,3].map(i=>`<div class="sitem" style="grid-template-columns:minmax(0,1fr) 90px 90px"><select id="bcP${i}" aria-label="Produit ligne ${i+1}"><option value="">— ligne ${i+1} —</option>${bcItems.map(x=>`<option value="${x.id}">${x.name} (${x.price} €)</option>`).join("")}</select><input type="text" id="bcQ${i}" inputmode="numeric" aria-label="Quantité ligne ${i+1}" placeholder="Qté"><span class="p" id="bcM${i}" style="font-variant-numeric:tabular-nums;text-align:right"></span></div>`).join("");
+function bcLines(){return [0,1,2,3].map(i=>{const id=document.getElementById("bcP"+i).value,q=parseInt(document.getElementById("bcQ"+i).value,10)||0,it=bcItems.find(x=>x.id===id);document.getElementById("bcM"+i).textContent=it&&q?(it.price*q)+" €":"";return it&&q?{id,q,m:it.price*q}:null;}).filter(Boolean);}
+bcEl.addEventListener("input",bcLines);
+document.getElementById("bcCheck").onclick=()=>{
+ const L=bcLines(),tot=L.reduce((s,l)=>s+l.m,0),mine=parseFloat(document.getElementById("bcTot").value.replace(",",".")),fb=document.getElementById("bcFeed");
+ const want={ama:1,etm:2,liv:1},got={};L.forEach(l=>got[l.id]=(got[l.id]||0)+l.q);
+ const errs=[];Object.keys(want).forEach(k=>{if(got[k]!==want[k])errs.push(bcItems.find(x=>x.id===k).name+" : vérifiez la quantité ou l'oubli");});
+ Object.keys(got).forEach(k=>{if(!want[k])errs.push(bcItems.find(x=>x.id===k).name+" : la cliente ne l'a pas commandé");});
+ if(errs.length){fb.className="feedback no";fb.textContent="À corriger : "+errs.join(" · ")+".";return;}
+ if(isNaN(mine)){fb.className="feedback mid";fb.textContent="Les lignes sont justes. Entrez maintenant le total trouvé sur papier.";return;}
+ if(mine===tot){fb.className="feedback ok";fb.textContent=`Bravo : commande et total justes (${tot} €).`;win("sav",5,fb,true);}
+ else{fb.className="feedback no";fb.textContent=`Les lignes sont justes, mais votre total (${mine} €) est faux. Refaites l'addition des montants.`;}
+};
+
+/* ---------- Commercial ---------- */
+const qsort=[
+ ["Pour quelle occasion souhaitez-vous offrir des fleurs ?","o"],
+ ["Souhaitez-vous un emballage cadeau ?","f"],
+ ["Préférez-vous un bouquet de roses ou une plante en pot ?","a"],
+ ["Quelles couleurs aime la personne ?","o"],
+ ["Avez-vous un budget précis ?","f"],
+ ["Vous l'emportez aujourd'hui ou nous le livrons ?","a"],
+ ["Comment allez-vous décorer votre table de Noël ?","o"],
+ ["Est-ce que vous connaissez le Bouquet Étoile de Noël ?","f"]
+];
+const lab={o:"Ouverte",f:"Fermée",a:"Alternative"};
+const sortEl=document.getElementById("sort");
+function buildSort(){
+ sortEl.innerHTML=qsort.map(([t],i)=>`<div class="sitem" data-i="${i}"><span>« ${t} »</span><div class="seg" role="group" aria-label="Type de question">${Object.keys(lab).map(k=>`<button type="button" data-k="${k}" aria-pressed="false">${lab[k]}</button>`).join("")}</div></div>`).join("");
+ document.getElementById("sortScore").textContent="";
+}
+sortEl.addEventListener("click",e=>{const b=e.target.closest(".seg button");if(!b)return;b.parentElement.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));b.closest(".sitem").classList.remove("good","wrong");});
+document.getElementById("sortCheck").onclick=()=>{let s=0;sortEl.querySelectorAll(".sitem").forEach(it=>{const p=it.querySelector('[aria-pressed="true"]'),ok=p&&p.dataset.k===qsort[+it.dataset.i][1];it.classList.toggle("good",!!ok);it.classList.toggle("wrong",!ok);if(ok)s++;});countUp(document.getElementById("sortScore"),s,qsort.length);if(s===qsort.length)win("commercial",2,document.getElementById("sortScore"),true);};
+document.getElementById("sortReset").onclick=buildSort;buildSort();
+quiz(document.getElementById("quizO"),[
+ {q:"« Le bouquet Flocon à 48 €, c'est un peu cher pour moi… »",o:["« C'est le prix, madame. »","« Je comprends. Le Bouquet Étoile de Noël taille Moyen, à 35 €, est tout aussi festif. Je vous le montre ? »","« Les autres fleuristes sont encore plus chers. »"],a:1,e:"On reste poli et on propose une solution dans le budget du client."},
+ {q:"« Les fleurs ne vont jamais tenir jusqu'à Noël… »",o:["« Ce n'est pas notre problème. »","« Achetez-le plutôt le 24 décembre. »","« Avec de l'eau fraîche chaque jour, il tient environ une semaine. Je vous donne nos conseils d'entretien. »"],a:2,e:"On rassure avec une information concrète et un conseil."},
+ {q:"« Je ne sais pas si ça va lui plaire… »",o:["« Quelles couleurs aime-t-elle ? Je vous aide à choisir. »","« Prenez-le, de toute façon tout le monde aime les fleurs. »","« Vous n'avez qu'à revenir avec elle. »"],a:0,e:"Une question ouverte aide à mieux connaître le besoin."},
+ {q:"« Je vais réfléchir, je reviendrai plus tard. »",o:["« Si vous partez, il n'y en aura plus. »","« Bien sûr. Je peux vous le mettre de côté jusqu'à ce soir. Voici notre carte avec nos horaires. »","« D'accord. Au revoir. »"],a:1,e:"On laisse le client libre, sans pression, et on facilite son retour."},
+ {q:"« Je n'aurai pas le temps d'aller le porter à ma mère. »",o:["« Nous livrons à Pont-à-Mousson pour 6 €, le jour de votre choix. »","« Il faudra vous organiser. »","« Envoyez quelqu'un le chercher. »"],a:0,e:"On propose un service complémentaire qui répond au problème."}
+],"qo",el=>win("commercial",6,el,true));
+
+const profiles=[
+ {id:"martin",n:"Mme Martin",d:"35 ans · pressée, dîner chez des amis ce soir",att:"rapide, prêt à emporter",b:25,good:["etp"],okk:["sec","poi","sap"]},
+ {id:"lambert",n:"M. Lambert",d:"50 ans · cadeau de Noël pour son épouse",att:"élégant, romantique, durable",b:60,good:["flo","etg"],okk:["etm","ama"]},
+ {id:"clara",n:"Clara Petit",d:"20 ans · « Secret Santa » pour une amie",att:"moderne, tendance, coloré",b:20,good:["sec","poi"],okk:[]},
+ {id:"rossi",n:"Mme Rossi",d:"68 ans · décorer sa table de Noël en famille",att:"festif, dure plusieurs jours",b:45,good:["cou","cen"],okk:["poi","ama","sap"]}
+];
+let curP=null,curPick=null;
+const prEl=document.getElementById("profiles"),catC=document.getElementById("catC");
+prEl.innerHTML=profiles.map(p=>`<button type="button" class="pf" data-id="${p.id}" aria-pressed="false"><b>${p.n}</b><span class="hint">${p.d}</span><span>Attentes : ${p.att}</span><span class="p" style="font-family:var(--display);font-weight:800;color:var(--berry)">Budget ${p.b} €</span></button>`).join("");
+prEl.addEventListener("click",e=>{const b=e.target.closest(".pf");if(!b)return;curP=profiles.find(p=>p.id===b.dataset.id);curPick=null;say(curP.id);prEl.querySelectorAll(".pf").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));updC();});
+function pick(id){curPick=id;updC();}
+catC.addEventListener("click",e=>{const c=e.target.closest(".prod");if(c)pick(c.dataset.id);});
+catC.addEventListener("keydown",e=>{const c=e.target.closest(".prod");if(c&&(e.key==="Enter"||e.key===" ")){e.preventDefault();pick(c.dataset.id);}});
+const servPrice={"Carte à personnaliser (2 €)":2,"Livraison Pont-à-Mousson (6 €)":6,"Livraison communes voisines (9 €)":9};
+function updC(){
+ renderCat(catC,{budget:curP&&curP.b,pick:curPick,clickable:true});
+ const fb=document.getElementById("cFeed"),tot=document.getElementById("cTotal");
+ if(!curP){fb.className="feedback mid";fb.textContent="Choisissez un profil puis un produit.";tot.textContent="";return;}
+ if(!curPick){fb.className="feedback mid";fb.textContent=`${curP.n} : budget ${curP.b} €. Cliquez sur le produit à proposer.`;tot.textContent="";return;}
+ const pr=products.find(p=>p.id===curPick),sv=document.getElementById("cServ").value,total=pr.price+(servPrice[sv]||0);
+ if(pr.price>curP.b){fb.className="feedback no";fb.textContent=`Trop cher : ${pr.price} € pour un budget de ${curP.b} €.`;}
+ else if(curP.good.includes(curPick)){fb.className="feedback ok";fb.textContent=`Très bon choix pour ${curP.n} : le produit correspond au budget et aux attentes.`;}
+ else if(curP.okk.includes(curPick)){fb.className="feedback mid";fb.textContent="Possible, mais relisez les attentes du client : un autre produit serait plus adapté.";}
+ else {fb.className="feedback mid";fb.textContent="Dans le budget, mais peu adapté aux attentes du client.";}
+ tot.textContent=sv?`Total pour le client : ${total} €${total>curP.b?" (attention, le service fait dépasser le budget)":""}.`:"Choisissez maintenant un service complémentaire.";
+ checkC();
+}
+document.getElementById("cServ").addEventListener("input",updC);updC();
+
+/* ---------- tabs ---------- */
+function route(){
+ const h=(location.hash||"#marketing").slice(1),t=["marketing","sav","commercial"].includes(h)?h:"marketing";
+ document.querySelectorAll("[data-view]").forEach(s=>s.hidden=s.dataset.view!==t);
+ document.querySelectorAll("nav a").forEach(a=>{if(a.dataset.tab===t)a.setAttribute("aria-current","page");else a.removeAttribute("aria-current");});
+}
+addEventListener("hashchange",()=>{route();scrollTo(0,0);});route();markAll();
+function updCaption(sl,pr,ph,dates){
+ const el=document.getElementById("caption");if(!el)return;
+ el.textContent=`${sl?sl+" ! ":""}${pr.name} à ${pr.price} €. ${ph}${dates?" Du 28 novembre au 24 décembre chez Arrosoir & Compagnie, 26 rue Victor Hugo à Pont-à-Mousson.":""}\n#NoelEnFleurs #PontAMousson #fleuriste #Noel2026`;
+}
+updPost();
+document.getElementById("capCopy").onclick=()=>{const el=document.getElementById("caption"),m=document.getElementById("capMsg");navigator.clipboard.writeText(el.textContent).then(()=>m.textContent="Légende copiée.").catch(()=>{const r=document.createRange();r.selectNodeContents(el);const x=getSelection();x.removeAllRanges();x.addRange(r);m.textContent="Texte sélectionné : faites Ctrl + C."})};
+</script>
+
+</body>
+</html>
